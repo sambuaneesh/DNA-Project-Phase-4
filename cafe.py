@@ -939,14 +939,13 @@ def newEmployee(
             address,
             salary,
             gender,
-            dateofbooking,
+            dob,
             doj,
             role,
             supervisorid,
             yearsofexp,
             age,
             resumelink,
-            dob,
             outletid,
         ),
     )
@@ -1289,6 +1288,34 @@ def updateOrderStatus(itemID, customerID, outletID, newStatus):
     )
     conn.commit()
     print("Order Status Updated Successfully")
+
+
+def calculateBill(customerID, outletID, dateOfOrder):
+    query = """UPDATE Bill
+    SET BillAmount = 
+    COALESCE((SELECT SUM(CASE WHEN Orders.Mode = 0 THEN BillItems.OrderedItems + 25 ELSE BillItems.OrderedItems END) 
+              FROM BillItems
+              JOIN Orders ON BillItems.OutletID = Orders.OutletID 
+                          AND BillItems.CustomerID = Orders.CustomerID
+                          AND BillItems.OrderedItems = Orders.ItemId
+              WHERE BillItems.CustomerID = %s
+                AND BillItems.OutletID = %s
+                AND DATE(Orders.dateOfOrder) = %s
+              GROUP BY BillItems.OrderedItems), 0)
+    WHERE CustomerID = %s AND OutletID = %s AND DateOfOrder = %s;"""
+    cur.execute(
+        query,
+        (
+            customerID,
+            outletID,
+            dateOfOrder,
+            customerID,
+            outletID,
+            dateOfOrder,
+        ),
+    )
+    conn.commit()
+    print("Bill Calculated Successfully")
 
 
 def customer():
@@ -1726,7 +1753,8 @@ def waiter(id):
         print("7. View all Orders")
         print("8. Delete Order")
         print("9. Add new Order")
-        print("10. Exit")
+        print("10. Calculate Bill")
+        print("11. Exit")
         print()
         inp = int(input("Enter choice> "))
         if inp == 1:
@@ -1778,6 +1806,14 @@ def waiter(id):
             itemID = input()
             addNewOrder(outletID, customerID, mode, orderStatus, itemID)
         if inp == 10:
+            print("Enter Customer ID")
+            customerID = input()
+            print("Enter Outlet ID")
+            outletID = input()
+            print("Enter Date of Order")
+            dateOfOrder = input()
+            calculateBill(customerID, outletID, dateOfOrder)
+        if inp == 11:
             print("Thank you for using $dataBase*d")
             exit(0)
         tmp = input("Press Enter to continue...")
