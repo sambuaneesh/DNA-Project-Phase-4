@@ -1,9 +1,9 @@
 {
   "database": {
-    "host": "nobara",
+    "host": "pavitra",
     "port": 3306,
     "user": "root",
-    "password": "dH=g1Awrml%.",
-    "db": "dataBased"
+    "password": "dataBased@123",
+    "db": "final007"
   }
 }
