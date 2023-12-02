@@ -927,8 +927,8 @@ def newEmployee(
 ):
     # add new employee
     query = """INSERT INTO Employee
-    (EmployeeID, Name, Aadhar, Number, Address, Salary, Gender, DOB, DOJ, Role, SupervisorID, YearsOfExperience, Age, ResumeLink, OutletID)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s, %s);"""
+    (EmployeeID, Name, Aadhar, Number, Address, Salary, Gender, DOJ, DOB, Role, SupervisorID, YearsOfExperience, Age, ResumeLink, OutletID)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s);"""
     cur.execute(
         query,
         (
@@ -939,8 +939,8 @@ def newEmployee(
             address,
             salary,
             gender,
-            dob,
             doj,
+            dob,
             role,
             supervisorid,
             yearsofexp,
@@ -1131,12 +1131,15 @@ WHERE CustomerID = {customerID} AND OutletID = {outletID} AND ItemId = {itemID};
 
 
 def deleteEmployee(employeeID):
-    query = """DELETE FROM Employee
-    WHERE EmployeeID = %s;"""
-    cur.execute(
-        query,
-        (employeeID,),
+    # Update dependent rows
+    update_query = (
+        """UPDATE Employee SET SupervisorID = NULL WHERE SupervisorID = %s;"""
     )
+    cur.execute(update_query, (employeeID,))
+
+    # Delete the employee
+    delete_query = """DELETE FROM Employee WHERE EmployeeID = %s;"""
+    cur.execute(delete_query, (employeeID,))
     conn.commit()
     print("Employee Deleted Successfully")
 
@@ -1292,17 +1295,17 @@ def updateOrderStatus(itemID, customerID, outletID, newStatus):
 
 def calculateBill(customerID, outletID, dateOfOrder):
     query = """UPDATE Bill
-    SET BillAmount = 
-    COALESCE((SELECT SUM(CASE WHEN Orders.Mode = 0 THEN BillItems.OrderedItems + 25 ELSE BillItems.OrderedItems END) 
-              FROM BillItems
-              JOIN Orders ON BillItems.OutletID = Orders.OutletID 
-                          AND BillItems.CustomerID = Orders.CustomerID
-                          AND BillItems.OrderedItems = Orders.ItemId
-              WHERE BillItems.CustomerID = %s
-                AND BillItems.OutletID = %s
-                AND DATE(Orders.dateOfOrder) = %s
-              GROUP BY BillItems.OrderedItems), 0)
-    WHERE CustomerID = %s AND OutletID = %s AND DateOfOrder = %s;"""
+    SET BillAmount = (
+        SELECT SUM(MI.ItemPrice)
+        FROM BillItems BI
+        JOIN Orders O ON BI.OutletID = O.OutletID AND BI.CustomerID = O.CustomerID
+        JOIN MenuItem MI ON BI.OrderedItems = MI.ItemId
+        WHERE BI.CustomerID = %s
+          AND BI.OutletID = %s
+          AND O.dateOfOrder = %s
+    )
+    WHERE CustomerID = %s AND OutletID = %s AND DateOfBill = %s;"""
+    
     cur.execute(
         query,
         (
@@ -1316,6 +1319,7 @@ def calculateBill(customerID, outletID, dateOfOrder):
     )
     conn.commit()
     print("Bill Calculated Successfully")
+
 
 
 def customer():
@@ -1422,9 +1426,9 @@ def chef(id):
         print()
         print("1. Add new Menu Item")
         print("2. Update Menu Item")
-        print("3. Delete Menu Item")
-        print("4. Update Order Status")
-        print("5. Exit")
+        # print("3. Delete Menu Item")
+        print("3. Update Order Status")
+        print("4. Exit")
         print()
         inp = int(input("Enter choice> "))
         if inp == 1:
@@ -1451,11 +1455,11 @@ def chef(id):
             print("Enter New Item Image URL")
             newImage = input()
             updateMenuItem(itemID, newName, newDescription, newPrice, newImage)
+        # if inp == 3:
+        #     print("Enter Item ID")
+        #     itemID = input()
+        #     deleteMenuItem(itemID)
         if inp == 3:
-            print("Enter Item ID")
-            itemID = input()
-            deleteMenuItem(itemID)
-        if inp == 4:
             print("Enter Item ID")
             itemID = input()
             print("Enter Customer ID")
@@ -1465,7 +1469,7 @@ def chef(id):
             print("Enter New Order Status")
             newStatus = input()
             updateOrderStatus(itemID, customerID, outletID, newStatus)
-        if inp == 5:
+        if inp == 4:
             print("Thank you for using $dataBase*d")
             exit(0)
         tmp = input("Press Enter to continue...")
@@ -1939,8 +1943,8 @@ def supervisor(id):
             if cho == 1:
                 newEmployeeID = input("Enter Employee ID: ")
                 newName = input("Enter Employee Name: ")
-                newAadhar = input("Enter Aadhar Number: ")
-                newNumber = input("Enter Phone Number: ")
+                newAadhar = input("Enter Aadhar ID: ")
+                newNumber = input("Enter Aadhar Number: ")
                 newAddress = input("Enter Address: ")
                 newSalary = input("Enter Salary: ")
                 newGender = input("Enter Gender: ")

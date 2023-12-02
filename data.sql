@@ -26,7 +26,8 @@ CREATE TABLE `Bill` (
   `CustomerID` int NOT NULL,
   `OutletID` int NOT NULL,
   `BillAmount` decimal(10,5) DEFAULT NULL,
-  PRIMARY KEY (`CustomerID`,`OutletID`),
+  `DateOfBill` datetime NOT NULL,
+  PRIMARY KEY (`CustomerID`,`OutletID`,`DateOfBill`),
   KEY `fk_Bill_Outlet` (`OutletID`),
   CONSTRAINT `fk_Bill_Customer` FOREIGN KEY (`CustomerID`) REFERENCES `Customer` (`CustomerId`),
   CONSTRAINT `fk_Bill_Outlet` FOREIGN KEY (`OutletID`) REFERENCES `Outlet` (`OutletID`)
@@ -39,7 +40,7 @@ CREATE TABLE `Bill` (
 
 LOCK TABLES `Bill` WRITE;
 /*!40000 ALTER TABLE `Bill` DISABLE KEYS */;
-INSERT INTO `Bill` VALUES (1,1,8.99000),(2,2,5.99000),(3,3,29.97000),(4,4,12.99000),(5,5,10.99000),(6,6,8.99000),(7,7,5.99000),(8,8,8.99000),(9,9,10.99000),(10,10,12.99000),(11,11,10.99000),(12,12,8.99000),(13,13,5.99000),(14,14,22.98000),(15,15,10.99000),(16,16,8.99000),(17,17,5.99000),(18,18,13.98000),(19,19,NULL),(20,20,16.98000),(21,21,23.98000),(22,22,16.98000),(23,23,16.98000),(24,24,28.98000),(25,25,17.98000);
+INSERT INTO `Bill` VALUES (1,1,8.99000,'2023-12-02 17:46:00'),(2,2,5.99000,'2023-12-03 02:48:31'),(3,3,29.97000,'2023-12-03 17:55:03'),(4,4,12.99000,'2023-12-04 01:33:56'),(5,5,10.99000,'2023-12-05 08:46:18'),(6,6,8.99000,'2023-12-05 15:09:39'),(7,7,5.99000,'2023-12-06 01:29:23'),(8,8,8.99000,'2023-12-06 09:57:59'),(9,9,10.99000,'2023-12-07 21:21:47'),(10,10,12.99000,'2023-12-07 04:54:57'),(11,11,10.99000,'2023-12-08 08:29:27'),(12,12,8.99000,'2023-12-08 03:42:22'),(13,13,5.99000,'2023-12-09 17:03:30'),(14,14,22.98000,'2023-12-09 02:10:24'),(15,15,10.99000,'2023-12-10 07:56:20'),(16,16,8.99000,'2023-12-11 16:37:09'),(17,17,5.99000,'2023-12-11 11:16:47'),(18,18,13.98000,'2023-12-12 06:32:26'),(19,19,15.00000,'2023-12-03 02:48:38'),(20,20,16.98000,'2023-12-13 22:41:56'),(21,21,23.98000,'2023-12-14 12:24:47'),(22,22,16.98000,'2023-12-15 07:33:30'),(23,23,16.98000,'2023-12-16 07:53:38'),(24,24,28.98000,'2023-12-17 09:57:42'),(25,25,17.98000,'2023-12-18 22:13:31');
 /*!40000 ALTER TABLE `Bill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,7 +56,7 @@ CREATE TABLE `BillItems` (
   `OutletID` int NOT NULL,
   `OrderedItems` int NOT NULL,
   PRIMARY KEY (`CustomerID`,`OutletID`,`OrderedItems`),
-  CONSTRAINT `fk_BillItems_Bill` FOREIGN KEY (`CustomerID`, `OutletID`) REFERENCES `Bill` (`CustomerID`, `OutletID`)
+  CONSTRAINT `BillItems_Bill_CustomerID_OutletID_fk` FOREIGN KEY (`CustomerID`, `OutletID`) REFERENCES `Bill` (`CustomerID`, `OutletID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,7 +140,7 @@ CREATE TABLE `Employee` (
   `Address` varchar(30) DEFAULT NULL,
   `Salary` decimal(5,0) DEFAULT NULL,
   `Gender` char(1) DEFAULT NULL,
-  `DateOfBooking` date DEFAULT NULL,
+  `DOJ` date DEFAULT NULL,
   `DOB` date DEFAULT NULL,
   `Role` varchar(10) DEFAULT NULL,
   `SupervisorID` int DEFAULT NULL,
@@ -161,7 +162,7 @@ CREATE TABLE `Employee` (
 
 LOCK TABLES `Employee` WRITE;
 /*!40000 ALTER TABLE `Employee` DISABLE KEYS */;
-INSERT INTO `Employee` VALUES (1,'John Doe',_binary 'aadhar1',123456789012,'Address 1',50000,'M','2023-01-01','2022-01-01','Manager',NULL,5,30,'resume_link1',2),(2,'Jane Smith',_binary 'aadhar2',987654321098,'Address 2',45000,'F','2023-02-01','2022-02-01','Supervisor',1,4,28,'resume_link2',4),(3,'Bob Johnson',_binary 'aadhar3',555555555555,'Address 3',40000,'M','2023-03-01','2022-03-01','Employee',2,3,25,'resume_link3',5),(4,'Alice Williams',_binary 'aadhar4',111111111111,'Address 4',55000,'F','2023-04-01','2022-04-01','Manager',NULL,6,32,'resume_link4',3),(5,'Charlie Brown',_binary 'aadhar5',222222222222,'Address 5',42000,'M','2023-05-01','2022-05-01','Employee',6,2,23,'resume_link5',1),(6,'Eva Miller',_binary 'aadhar6',333333333333,'Address 6',48000,'F','2023-06-01','2022-06-01','Supervisor',4,5,29,'resume_link6',2),(7,'David Wilson',_binary 'aadhar7',444444444444,'Address 7',51000,'M','2023-07-01','2022-07-01','waiter',6,4,27,'resume_link7',3),(8,'Grace Davis',_binary 'aadhar8',666666666666,'Address 8',49000,'F','2023-08-01','2022-08-01','Employee',6,3,26,'resume_link8',4),(9,'Frank White',_binary 'aadhar9',777777777777,'Address 9',46000,'M','2023-09-01','2022-09-01','Manager',NULL,7,31,'resume_link9',5),(10,'Helen Martinez',_binary 'aadhar10',888888888888,'Address 10',53000,'F','2023-10-01','2022-10-01','waiter',2,2,24,'resume_link10',1),(11,'Jack Taylor',_binary 'aadhar11',999999999999,'Address 11',47000,'M','2023-11-01','2022-11-01','Employee',6,4,28,'resume_link11',2),(12,'Olivia Brown',_binary 'aadhar12',123456789012,'1111222233',52000,'F','2023-12-01','2022-12-01','Supervisor',9,6,30,'resume_link12',3),(13,'Ryan Clark',_binary 'aadhar13',987654321098,'4444333322',49000,'M','2024-01-01','2023-01-01','Chef',12,3,26,'resume_link13',4),(14,'Sophia Adams',_binary 'aadhar14',555555555555,'1234123412',48000,'F','2024-02-01','2023-02-01','Chef',12,2,25,'resume_link14',5),(15,'Michael Turner',_binary 'aadhar15',111122223333,'5678567890',50000,'M','2024-03-01','2023-03-01','Manager',NULL,8,32,'resume_link15',1),(16,'Emma Harris',_binary 'aadhar16',444433332222,'9876543210',46000,'F','2024-04-01','2023-04-01','Employee',12,2,23,'resume_link16',2),(17,'Daniel Turner',_binary 'aadhar17',567856789012,'5555666677',54000,'M','2024-05-01','2023-05-01','waiter',12,4,28,'resume_link17',3),(18,'Olivia Green',_binary 'aadhar18',222233334444,'1234789456',49000,'F','2024-06-01','2023-06-01','Employee',12,3,27,'resume_link18',4),(19,'Liam Robinson',_binary 'aadhar19',123412341234,'9876543211',47000,'M','2024-07-01','2023-07-01','Manager',NULL,9,31,'resume_link19',6),(20,'Ava Lewis',_binary 'aadhar20',555566667777,'1111222233',51000,'F','2024-08-01','2023-08-01','Employee',21,2,24,'resume_link20',1),(21,'Mia Turner',_binary 'aadhar21',444433332211,'4444111122',48000,'F','2024-09-01','2023-09-01','Supervisor',19,5,29,'resume_link21',2),(22,'Ethan Davis',_binary 'aadhar22',555566667788,'9999888877',52000,'M','2024-10-01','2023-10-01','Employee',21,3,26,'resume_link22',3),(23,'Aria Martin',_binary 'aadhar23',444411113333,'8888777766',50000,'F','2024-11-01','2023-11-01','waiter',21,2,25,'resume_link23',4),(24,'Henry White',_binary 'aadhar24',555533334444,'3333222211',47000,'M','2024-12-01','2023-12-01','Manager',NULL,10,32,'resume_link24',7),(25,'Zoe Miller',_binary 'aadhar25',123478945612,'7777666655',54000,'F','2025-01-01','2024-01-01','Chef',19,2,23,'resume_link25',1);
+INSERT INTO `Employee` VALUES (2,'Jane Smith',_binary 'aadhar2',987654321098,'Address 2',45000,'F','2023-02-01','2022-02-01','Supervisor',NULL,4,28,'resume_link2',4),(3,'Bob Johnson',_binary 'aadhar3',555555555555,'Address 3',40000,'M','2023-03-01','2022-03-01','waiter',2,3,25,'resume_link3',5),(4,'Alice Williams',_binary 'aadhar4',111111111111,'Address 4',55000,'F','2023-04-01','2022-04-01','Manager',NULL,6,32,'resume_link4',3),(5,'Charlie Brown',_binary 'aadhar5',222222222222,'Address 5',42000,'M','2023-05-01','2022-05-01','waiter',6,2,23,'resume_link5',1),(6,'Eva Miller',_binary 'aadhar6',333333333333,'Address 6',48000,'F','2023-06-01','2022-06-01','Supervisor',4,5,29,'resume_link6',2),(7,'David Wilson',_binary 'aadhar7',444444444444,'Address 7',51000,'M','2023-07-01','2022-07-01','waiter',6,4,27,'resume_link7',3),(8,'Grace Davis',_binary 'aadhar8',666666666666,'Address 8',49000,'F','2023-08-01','2022-08-01','Chef',6,3,26,'resume_link8',4),(9,'Frank White',_binary 'aadhar9',777777777777,'Address 9',46000,'M','2023-09-01','2022-09-01','Manager',NULL,7,31,'resume_link9',5),(10,'Helen Martinez',_binary 'aadhar10',888888888888,'Address 10',53000,'F','2023-10-01','2022-10-01','waiter',2,2,24,'resume_link10',1),(11,'Jack Taylor',_binary 'aadhar11',999999999999,'Address 11',47000,'M','2023-11-01','2022-11-01','waiter',6,4,28,'resume_link11',2),(12,'Olivia Brown',_binary 'aadhar12',123456789012,'1111222233',52000,'F','2023-12-01','2022-12-01','Supervisor',9,6,30,'resume_link12',3),(13,'Ryan Clark',_binary 'aadhar13',987654321098,'4444333322',49000,'M','2024-01-01','2023-01-01','Chef',12,3,26,'resume_link13',4),(14,'Sophia Adams',_binary 'aadhar14',555555555555,'1234123412',48000,'F','2024-02-01','2023-02-01','Chef',12,2,25,'resume_link14',5),(15,'Michael Turner',_binary 'aadhar15',111122223333,'5678567890',50000,'M','2024-03-01','2023-03-01','Manager',NULL,8,32,'resume_link15',1),(16,'Emma Harris',_binary 'aadhar16',444433332222,'9876543210',46000,'F','2024-04-01','2023-04-01','Chef',12,2,23,'resume_link16',2),(17,'Daniel Turner',_binary 'aadhar17',567856789012,'5555666677',54000,'M','2024-05-01','2023-05-01','waiter',12,4,28,'resume_link17',3),(18,'Olivia Green',_binary 'aadhar18',222233334444,'1234789456',49000,'F','2024-06-01','2023-06-01','Chef',12,3,27,'resume_link18',4),(19,'Liam Robinson',_binary 'aadhar19',123412341234,'9876543211',47000,'M','2024-07-01','2023-07-01','Manager',NULL,9,31,'resume_link19',6),(20,'Ava Lewis',_binary 'aadhar20',555566667777,'1111222233',51000,'F','2024-08-01','2023-08-01','Chef',21,2,24,'resume_link20',1),(21,'Mia Turner',_binary 'aadhar21',444433332211,'4444111122',48000,'F','2024-09-01','2023-09-01','Supervisor',19,5,29,'resume_link21',2),(22,'Ethan Davis',_binary 'aadhar22',555566667788,'9999888877',52000,'M','2024-10-01','2023-10-01','Chef',21,3,26,'resume_link22',3),(23,'Aria Martin',_binary 'aadhar23',444411113333,'8888777766',50000,'F','2024-11-01','2023-11-01','waiter',21,2,25,'resume_link23',4),(24,'Henry White',_binary 'aadhar24',555533334444,'3333222211',47000,'M','2024-12-01','2023-12-01','Manager',NULL,10,32,'resume_link24',7),(25,'Zoe Miller',_binary 'aadhar25',123478945612,'7777666655',54000,'F','2025-01-01','2024-01-01','Chef',19,2,23,'resume_link25',1),(78,'adsas',_binary 'aadhar2',987654321070,'ads',1200,'M','2020-02-02','2020-02-02','Chef',NULL,1,1,'1',1);
 /*!40000 ALTER TABLE `Employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -475,4 +476,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-02 22:22:22
+-- Dump completed on 2023-12-03  3:00:09
