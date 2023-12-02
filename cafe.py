@@ -88,7 +88,7 @@ def searchItems(ItemName, ItemDescription):
 FROM MenuItem
 INNER JOIN MenuOutlet ON MenuItem.ItemId = MenuOutlet.ItemId
 INNER JOIN Outlet ON MenuOutlet.OutletID = Outlet.OutletID
-WHERE MenuItem.ItemName LIKE '%{ItemName}%' OR MenuItem.ItemDescription LIKE '%{ItemDescription}%';
+WHERE MenuItem.ItemName LIKE '%{ItemName}%' AND MenuItem.ItemDescription LIKE '%{ItemDescription}%';
 """
     cur.execute(query)
     result = cur.fetchall()
@@ -115,7 +115,7 @@ WHERE MenuItem.ItemName LIKE '%{ItemName}%' OR MenuItem.ItemDescription LIKE '%{
 def searchOutlets(Address, PopularItem):
     query = f"""SELECT Outlet.OutletName, Outlet.Address, Outlet.Rating
 FROM Outlet
-WHERE Outlet.Address LIKE '%{Address}%' OR Outlet.PopularItem LIKE '%{PopularItem}%';
+WHERE Outlet.Address LIKE '%{Address}%' AND Outlet.PopularItem LIKE '%{PopularItem}%';
 """
     cur.execute(query)
     result = cur.fetchall()
@@ -2008,7 +2008,7 @@ def employee():
 
 
 with conn.cursor() as cur:
-    # time.sleep(2)
+    time.sleep(2)
     tmp = sp.call("clear", shell=True)
     print("Choose your role:")
     inp = int(
