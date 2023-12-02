@@ -676,3 +676,308 @@ Certainly! Below is an analysis of the provided functions:
 
 - **Output:**
   - Invokes the corresponding function based on the user's role choice or exits the program.
+
+# For demonstration:
+
+### `customer()`
+
+- **Purpose:**
+  - Provides an interactive menu for customer interactions.
+
+- **Input:**
+  - Takes user inputs for various choices in the customer menu.
+
+- **Output:**
+  - Displays information based on the selected choices.
+
+### `searchOutlets(Address, PopularItem)`
+
+- **Purpose:**
+  - Searches for outlets based on address and popular item.
+
+- **Query:**
+  - Retrieves outlets from the `Outlet` table using a LIKE condition.
+
+- **Output:**
+  - Displays outlets found with their name, address, and rating.
+
+### `viewCustomerOrders(customerID)`
+
+- **Purpose:**
+  - Displays a list of orders for a specific customer.
+
+- **Query:**
+  - Selects orders from the `Orders` table based on the provided customer ID.
+
+- **Output:**
+  - Displays a table of order details for the specified customer.
+
+###  `viewCustomerReservations(customerID)`
+
+- **Purpose:**
+  - Displays a list of reservations for a specific customer.
+
+- **Query:**
+  - Selects reservations from the `Reservation` table based on the provided customer ID.
+
+- **Output:**
+  - Displays a table of reservation details for the specified customer.
+
+### `displayOutlets()`
+
+- **Purpose:**
+  - Displays details of all outlets.
+
+- **Query:**
+  - Selects all columns from the `Outlet` table.
+
+- **Output:**
+  - Presents a table of all outlet details.
+
+### `menuByItemID(ID)`
+
+- **Purpose:**
+  - Displays details of a menu item based on its ID.
+
+- **Query:**
+  - Selects all columns from the `MenuItem` table where the ItemId matches.
+
+- **Output:**
+  - Presents details of the menu item.
+
+### `menuItemByName(name)`
+
+- **Purpose:**
+  - Displays details of a menu item based on its name.
+
+- **Query:**
+  - Selects all columns from the `MenuItem` table where the ItemName matches.
+
+- **Output:**
+  - Presents details of the menu item.
+
+
+### `searchItems(ItemName, ItemDescription)`
+
+- **Purpose:**
+  - Searches for menu items based on name and description.
+
+- **Query:**
+  - Retrieves items from the `MenuItem`, `MenuOutlet`, and `Outlet` tables using a LIKE condition.
+
+- **Output:**
+  - Displays items found with their name, description, and associated outlet.
+
+### `maxOutletRating()`
+
+- **Purpose:**
+  - Finds and displays the maximum rating among all outlets.
+
+- **Query:**
+  - Selects the maximum rating from the `Outlet` table.
+
+- **Output:**
+  - Displays the maximum rating.
+
+### `deliveryPartner()`
+
+- **Purpose:**
+  - Provides an interactive menu for delivery partners.
+
+- **Input:**
+  - Takes user inputs for checking order statuses.
+
+- **Output:**
+  - Displays information about order statuses for the delivery partner.
+
+### `analyzeDeliveryOrders()`
+
+- **Purpose:**
+  - Analyzes and displays the number of orders for each delivery partner.
+
+- **Query:**
+  - Counts the number of orders associated with each delivery partner.
+
+- **Output:**
+  - Presents a table of delivery partners and their order counts.
+
+### `employee()`
+
+- **Purpose:**
+  - Determines the role of the employee based on the provided employee ID and directs them to the corresponding role-specific function (Manager, Chef, Waiter, Supervisor).
+
+- **Input:**
+  - Takes user input for the employee ID.
+
+- **Output:**
+  - Invokes the appropriate role-specific function or indicates that the employee was not found.
+
+### `searchEmployee(role, yearsOfExperience)`
+
+- **Purpose:**
+  - Retrieves and displays employees based on their role and years of experience.
+
+- **Query:**
+  - Selects employee details from the `Employee` table where the role
+
+ matches, and years of experience are greater than or equal to the specified value.
+
+- **Output:**
+  - Displays employee details.
+
+### `viewCustomerOrders(customerID)`
+
+- **Purpose:**
+  - Displays a list of orders for a specific customer.
+
+- **Query:**
+  - Selects orders from the `Orders` table based on the provided customer ID.
+
+- **Output:**
+  - Displays a table of order details for the specified customer.
+
+
+### `viewCustomerReservations(customerID)`
+
+- **Purpose:**
+  - Displays a list of reservations for a specific customer.
+
+- **Query:**
+  - Selects reservations from the `Reservation` table based on the provided customer ID.
+
+- **Output:**
+  - Displays a table of reservation details for the specified customer.
+
+### `totalOrdersByOnOff()`
+
+- **Purpose:**
+  - Calculates and displays the total number of online and offline orders.
+
+- **Query:**
+  - Uses a conditional sum to count online and offline orders from the `Orders` table.
+
+- **Output:**
+  - Displays the total number of online and offline orders.
+
+### `newOutlet(OutletID, OutletName, Address, Phone, Rating, PopularItem, Revenue, OutletCapacity)`
+
+- **Purpose:**
+  - Inserts a new outlet into the database.
+
+- **Query:**
+  - Inserts values into the `Outlet` table.
+
+- **Output:**
+  - Prints a message indicating successful addition.
+
+### `analyzeOrderFrequency()`
+
+- **Purpose:**
+  - Analyzes and displays the order frequency for each customer.
+
+- **Query:**
+  - Counts the number of orders for each customer.
+
+- **Output:**
+  - Presents a table of customer IDs and their order frequencies.
+
+### `analyzeMostOrdered()`
+
+- **Purpose:**
+  - Analyzes and displays the most ordered menu items.
+
+- **Query:**
+  - Counts the number of times each menu item has been ordered.
+
+- **Output:**
+  - Presents a table of menu items with their order counts, ordered in descending order.
+
+### `supervisor(id)`
+
+- **Purpose:**
+  - Provides an interactive menu for supervisors.
+
+- **Input:**
+  - Takes user inputs for tasks such as searching employees, viewing customers, managing reservations, viewing statistics, managing employees, and exiting.
+
+- **Output:**
+  - Displays information and messages based on the selected tasks.
+
+### `addNewCustomer(newCustomerID, newName, newPhone, newEmail, newMember, newMemberSince, newCustomerSince, newDiscount)`
+
+- **Purpose:**
+  - Adds a new customer to the database with the provided details.
+
+- **Input:**
+  - `newCustomerID`: The ID of the new customer.
+  - `newName`: The name of the new customer.
+  - `newPhone`: The phone number of the new customer.
+  - `newEmail`: The email address of the new customer.
+  - `newMember`: Membership information of the new customer.
+  - `newMemberSince`: Date since the customer has been a member.
+  - `newCustomerSince`: Date when the customer joined.
+  - `newDiscount`: Discount information for the new customer.
+
+- **Query:**
+  - Inserts a new record into the `Customer` table with the provided information.
+
+- **Output:**
+  - Prints a message indicating successful addition of the new customer.
+
+### `deleteCustomer(customerID)`
+
+- **Purpose:**
+  - Deletes a customer from the database based on the provided customer ID.
+
+- **Input:**
+  - `customerID`: The ID of the customer to be deleted.
+
+- **Query:**
+  - Deletes the customer record from the `Customer` table based on the provided customer ID.
+
+- **Output:**
+  - Prints a message indicating successful deletion of the customer.
+
+### `waiter(id)`
+
+- **Purpose:**
+  - Provides an interactive menu for waiters.
+
+- **Input:**
+  - Takes user inputs for tasks such as viewing customer details, adding new customers, viewing menu items, managing reservations, and handling orders.
+
+- **Output:**
+  - Displays information and messages based on the selected tasks.
+
+### `calculateBill(customerID, outletID, dateOfOrder)`
+
+- **Purpose:**
+  - Calculates and updates the bill amount for a specific customer's order.
+
+- **Query:**
+  - Updates the `Bill` table with the calculated bill amount based on the provided customer ID, outlet ID, and date of order.
+
+- **Output:**
+  - Prints a message indicating successful bill calculation.
+
+### `chef(id)`
+
+- **Purpose:**
+  - Provides an interactive menu for chefs.
+
+- **Input:**
+  - Takes user inputs for adding, updating, and deleting menu items, as well as updating order status.
+
+- **Output:**
+  - Displays messages indicating the success of the performed operations.
+
+### `updateOrderStatus(itemID, customerID, outletID, newStatus)`
+
+- **Purpose:**
+  - Updates the order status for a specific order.
+
+- **Query:**
+  - Updates the `Orders` table with the new order status based on the provided item ID, customer ID, and outlet ID.
+
+- **Output:**
+  - Prints a message indicating the successful update.
