@@ -261,32 +261,6 @@ def customerDetails_byNo(CustomerNumber):
         print("Customer Not Found!!")
 
 
-def dispatch(ch):
-    """
-    Function that maps helper functions to option entered
-    """
-
-    if ch == 1:
-        print("1. by Employee ID")
-        print("2. by Employee Name")
-        print("3. by Employee Role")
-        print("4. by Employee Supervisor")
-        cho = int(input("Enter choice> "))
-        if cho == 1:
-            emp_id = input("Enter Employee ID: ")
-            query = "SELECT * FROM Employee WHERE EmployeeID = %s"
-            cur.execute(query, (emp_id))
-            result = cur.fetchall()
-            tmp = sp.call("clear", shell=True)
-            if result:
-                print("Employee Found!!")
-                print("Employee ID\t:\t", result[0]["EmployeeID"])
-                print("Employee Name\t:\t", result[0]["Name"])
-                print("Employee Role\t:\t", result[0]["Role"])
-            else:
-                print("Employee Not Found!!")
-
-
 def employeeNames():
     query = f"""SELECT EmployeeID, Name
 FROM Employee;
@@ -975,6 +949,8 @@ def addMenuItem(ItemId, ItemName, ItemDescription, ItemPrice, ItemImageURL):
 def addNewCustomer(
     CustomerId, Name, Phone, Email, Member, MemberSince, CustomerSince, Discount
 ):
+    if MemberSince == "":
+        MemberSince = None
     query = """INSERT INTO Customer 
                     (CustomerId, Name, Phone, Email, Member, MemberSince, CustomerSince, Discount) 
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
@@ -1305,7 +1281,7 @@ def calculateBill(customerID, outletID, dateOfOrder):
           AND O.dateOfOrder = %s
     )
     WHERE CustomerID = %s AND OutletID = %s AND DateOfBill = %s;"""
-    
+
     cur.execute(
         query,
         (
@@ -1319,7 +1295,6 @@ def calculateBill(customerID, outletID, dateOfOrder):
     )
     conn.commit()
     print("Bill Calculated Successfully")
-
 
 
 def customer():
@@ -1750,7 +1725,7 @@ def waiter(id):
         print()
         print("1. View Customer by ID")
         print("2. View Customer by Name")
-        print("3. View Customer by Phone")
+        print("3. Add Customer")
         print("4. View Menu Item by ID")
         print("5. View Menu Item by Name")
         print("6. View all Reservations")
@@ -1770,9 +1745,24 @@ def waiter(id):
             customerName = input()
             customerDetails_byName(customerName)
         if inp == 3:
-            print("Enter Customer Phone")
-            customerPhone = input()
-            customerDetails_byNo(customerPhone)
+            newCustomerID = input("Enter Customer ID: ")
+            newName = input("Enter Customer Name: ")
+            newPhone = input("Enter Phone Number: ")
+            newEmail = input("Enter Email: ")
+            newMember = input("Enter Member: ")
+            newMemberSince = input("Enter Member Since: ")
+            newCustomerSince = input("Enter Customer Since: ")
+            newDiscount = input("Enter Discount: ")
+            addNewCustomer(
+                newCustomerID,
+                newName,
+                newPhone,
+                newEmail,
+                newMember,
+                newMemberSince,
+                newCustomerSince,
+                newDiscount,
+            )
         if inp == 4:
             print("Enter Item ID")
             itemID = input()
